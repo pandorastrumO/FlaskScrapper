@@ -1,5 +1,4 @@
 import datetime
-
 from flask import Flask, render_template, request, redirect, url_for
 from flask import jsonify
 from scrapping import scrape
