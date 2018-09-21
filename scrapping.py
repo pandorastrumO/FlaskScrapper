@@ -6,8 +6,37 @@ __desc__ = "Main Exe file to Run"
 from bs4 import BeautifulSoup
 import requests
 
-def scrape(post_link):
-    l = []
+def scrape(multiple_link=True, post_link=None, login=True, username=None, password=None):
+    # variables to store scrapped data
+    likers = []
+    commenters = []
+    likers_profile_link = []
+    commenters_profile_link = []
+    likers_likings = []
+    commenters_likings = []
+
+    # TODO: login mechanism
+
+    # TODO: get link and get commenters and their profile
+
+    # TODO: from those profile get their likes
+
+    # TODO: get likers and get their profile
+
+    # TODO: from those profile get their likes (repeat)
+
+    # TODO: combine them and store the data
+
+    # check if the link is multiple or single
+    if multiple_link:
+        # read from imported file
+        pass
+    else:
+        # read from post_link
+
+        pass
+    # get facebook login url
+
     for page in range(0, 3):
         page = page + 1
         # base_url = 'https://www.bukalapak.com/promo/serba-serbu-produk-terlaris-bukalapak?from=old-popular-section-3&page=' + str(page)

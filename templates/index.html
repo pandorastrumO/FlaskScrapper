@@ -1,10 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Aldrin Scrapper</title>
-</head>
-<body>
-<h1>Aldrin Scrapper</h1>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Ashiquzzaman Khan">
+        <title>Facebook Post Scrapper</title>
+        <!-- Bootstrap core CSS -->
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../static/css/style.css" rel="stylesheet">
+    </head>
+    <body style="background-color: #222222;">
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../static/js/jquery.min.js"></script>
+        <div class="container">
+            <form action="{{ url_for('results') }}" method="POST">
+            <div class="row" style="color: #ffffff; text-align: center; align-items: center; justify-content: center;">
+                <!-- header -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <h1>Scrapper</h1>
+                </div>
+                <!-- separator -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <hr />
+                </div>
+                <!-- Login Radio Button Group -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 1%; margin-bottom: 1%;">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-secondary active" id="loginbtn" onclick="handleLogin($(this))">
+                            <input type="radio" name="Radio" value="login1" autocomplete="off" checked="">&nbsp;Login
+                        </label>
+                        <label class="btn btn-secondary" id="loginbtn" onclick="handleLogin($(this))">
+                            <input type="radio" name="Radio" value="login2" autocomplete="off">&nbsp;Without login
+                        </label>
+                    </div>
+                </div>
+                <!-- Login Fields -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <!-- Enable Group -->
+                    <div class="row" id="login1" style="justify-content: center;margin-top: 1%;margin-bottom: 1%;">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <input type="text" name="username" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <input type="password" name="password" class="form-control" placeholder="Password">
+                        </div>
+                    </div>
+                    <!-- Disable Group -->
+                    <div class="row" id="login2" style="justify-content: center;margin-top: 1%;margin-bottom: 1%;">
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <input type="text" class="form-control" placeholder="Disable" disabled>
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <input type="password" class="form-control" placeholder="Disable" disabled>
+                        </div>
+                    </div>
+                </div>
+                <!-- Post Link Fields -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 1%; margin-bottom: 1%;">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-secondary active" id="postLink" onclick="handleImport($(this))">
+                            <input type="radio" name="postlink" value="postLink1" autocomplete="off" checked="">&nbsp;Single Post Link
+                        </label>
+                        <label class="btn btn-secondary" id="postLink" onclick="handleImport($(this))">
+                            <input type="radio" name="postlink" value="postLink2" autocomplete="off">&nbsp;Multiple Post Link
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="postlink1">
+                            <input type="text" name="singlePost" class="form-control" placeholder="URL Link of the Post">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="postlink2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                             </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose CSV file</label>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="margin-top: 1%; margin-bottom: 1%;" class="col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
+                    <button type="submit" class="btn btn-light">Start Scrapping</button>
+                </div>
+                <div class="col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12" style="margin-top: 1%;
+    margin-bottom: 1%;">
+                    <h5>Previous Scrapping Job</h5>
+                    <hr />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Post Link</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    <a href="#">Jobs</a>
+                                </td>
+
+                                <td>09/18/2018</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>09/21/2018</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>09/22/2018</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </form>
+        </div>
+        <script src="../static/js/popper.js"></script>
+        <script src="../static/js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+        <script src="../static/js/index.js"></script>
+    </body>
 </html>
