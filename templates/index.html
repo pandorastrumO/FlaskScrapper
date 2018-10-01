@@ -18,24 +18,35 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="../static/js/jquery.min.js"></script>
         <div class="container">
-            <form action="{{ url_for('results') }}" method="POST">
+            <form action="{{ url_for('progress') }}" method="POST">
             <div class="row" style="color: #ffffff; text-align: center; align-items: center; justify-content: center;">
                 <!-- header -->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <h1>Scrapper</h1>
+                    <h2>Scrapper</h2>
                 </div>
                 <!-- separator -->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <hr />
                 </div>
-                <!-- Login Radio Button Group -->
+                <!-- Mac Windows Button Group -->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 1%; margin-bottom: 1%;">
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary active" id="loginbtn" onclick="handleLogin($(this))">
-                            <input type="radio" name="Radio" value="login1" autocomplete="off" checked="">&nbsp;Login
+                        <label class="btn btn-secondary active" id="macwinbtn">
+                            <input type="radio" name="MacWin" value="mac" autocomplete="off" checked="">&nbsp;MAC
                         </label>
-                        <label class="btn btn-secondary" id="loginbtn" onclick="handleLogin($(this))">
-                            <input type="radio" name="Radio" value="login2" autocomplete="off">&nbsp;Without login
+                        <label class="btn btn-secondary" id="macwinbtn">
+                            <input type="radio" name="MacWin" value="windows" autocomplete="off">&nbsp;Windows
+                        </label>
+                    </div>
+                </div>
+                <!-- Browser Button Group -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 1%; margin-bottom: 1%;">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-secondary active" id="browserbtn">
+                            <input type="radio" name="browser" value="chrome" autocomplete="off" checked="">&nbsp;Chrome
+                        </label>
+                        <label class="btn btn-secondary" id="browserbtn">
+                            <input type="radio" name="browser" value="firefox" autocomplete="off">&nbsp;Fire Fox
                         </label>
                     </div>
                 </div>
@@ -50,17 +61,8 @@
                             <input type="password" name="password" class="form-control" placeholder="Password">
                         </div>
                     </div>
-                    <!-- Disable Group -->
-                    <div class="row" id="login2" style="justify-content: center;margin-top: 1%;margin-bottom: 1%;">
-                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                            <input type="text" class="form-control" placeholder="Disable" disabled>
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                            <input type="password" class="form-control" placeholder="Disable" disabled>
-                        </div>
-                    </div>
                 </div>
-                <!-- Post Link Fields -->
+                <!-- Post Link Radio Button Group -->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 1%; margin-bottom: 1%;">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-secondary active" id="postLink" onclick="handleImport($(this))">
@@ -71,31 +73,39 @@
                         </label>
                     </div>
                 </div>
+                <!-- POST LINK Fields -->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="row" style="justify-content: center;">
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="postlink1">
+                        <!-- single post -->
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="postLink1">
                             <input type="text" name="singlePost" class="form-control" placeholder="URL Link of the Post">
                         </div>
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="postlink2">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                             </div>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose CSV file</label>
+                        <!-- multiple post -->
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="postLink2">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose CSV file</label>
+                                </div>
                             </div>
                         </div>
-                        </div>
-
                     </div>
                 </div>
+                <!-- Scrap Button -->
                 <div style="margin-top: 1%; margin-bottom: 1%;" class="col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
                     <button type="submit" class="btn btn-light">Start Scrapping</button>
                 </div>
+                <!-- separator -->
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <hr />
+                </div>
+                <!-- Previous JOB Table -->
                 <div class="col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12" style="margin-top: 1%;
     margin-bottom: 1%;">
-                    <h5>Previous Scrapping Job</h5>
+                    <h6>Previous Scrapping Job</h6>
                     <hr />
                     <table class="table">
                         <thead>
@@ -105,28 +115,16 @@
                                 <th>Date</th>
                             </tr>
                         </thead>
-
                         <tbody>
+                            {% for i in _data %}
                             <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">{{ loop.index }}</th>
                                 <td>
-                                    <a href="#">Jobs</a>
+                                    <a href={{ url_for('results', _jobs_id=i["_id"]) }}>{{ i["Post"] }}</a>
                                 </td>
-
-                                <td>09/18/2018</td>
+                                <td>{{ i["DateStamp"] }}</td>
                             </tr>
-
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>09/21/2018</td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>09/22/2018</td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

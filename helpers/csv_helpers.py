@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
 """
 __author__ = "Ashiquzzaman Khan"
-__desc__ = "library to execute various csv related operations"
+__desc__ = "file to execute various csv related operations"
 """
 import csv
 
+__all__ = [
+    'readCSV',
+    'downloadCSV',
+]
 
-def readCSV(_filename):
+def readCSV(_filename, _columnName):
     """
     functions to read csv file
     :param _filename: a given file with the extension csv
+    :param _columnName: string name of the column to read
     :return: a list
     """
     _list = []
     with open(_filename, 'rb') as csvFile:
-        r = csv.reader(csvFile, delimiter=' ')
+        r = csv.DictReader(csvFile)
         for row in r:
-            _list.append(row)
+            _list.append(row[_columnName])
     return _list
 
 def downloadCSV():
@@ -24,10 +29,6 @@ def downloadCSV():
     functions to download csv file from database
     :return:
     """
+    #TODO: query the data and write to a file
+    #TODO: save the file to desktop with time
     pass
-
-
-with open('eggs.csv', 'rb') as csvfile:
-    r = csv.reader(csvfile, delimiter=' ', quotechar='|')
-    for row in r:
-    print ', '.join(row)

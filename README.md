@@ -8,7 +8,7 @@
 
 This is a project for scrapping likers and commenters of a given post URL of facebook
 It also collects the likers likings and commenters likings from their profile and store all the data
-into mongo databases collections.
+into mongo databases collections. All collected data is Publicly available by facebook. 
 
 ## Installation & Setup (Development Environment)
 
@@ -22,10 +22,17 @@ pip install -r requirements.txt
 Download (Extras):
 - [Python 3.6](https://www.python.org/)
 - [VS CODE](https://code.visualstudio.com/)
+- [Google Chrome](https://www.google.com/chrome/?brand=CHBD&gclid=Cj0KCQjwi8fdBRCVARIsAEkDvnI_-Usd4sWPkamFkNA7G9MRls59EqPNbwY4Nu6YpvKKOQqoMw4kSV0aAqS9EALw_wcB&gclsrc=aw.ds.ds&dclid=CLrPjYCC5t0CFURnjgod4sgNdw)
+
+Configure the settings for flask can be found on ```config.cfg``` file. Edit it to get your desired settings
+
+```Binary``` folders contains all the web drivers for both mac and windows.
 
 ## Usage example (Development Environment)
 
 To run the flask project:
+
+navigate to the root folder
 ```
 python app.py
 ```
@@ -33,10 +40,12 @@ python app.py
 ## Helpers Library
 # csv_helpers.py
 > Library that helps on writing csv file and reading csv file
-# fb_helpers.py
-> Library that helps on login into facebook and perfoem various task on facebook
 # db_helpers.py
 > Library that helps on communicating with mongo db
+# generic_helpers.py
+> Library that helps on various task such as get download file name or get time in provided format
+# scrapper.py
+> Library that helps on scrapping process
 
 ## Release History
 
