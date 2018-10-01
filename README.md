@@ -1,5 +1,5 @@
 # Flask Web App With Scrapy Framework
-> A simple flask app integrated with scrapy framework to run over facebook to mine data
+> A simple flask app integrated with selenium to run over facebook to mine data
 > also using embedded twisted reactor along with gunicorn WSGI server for Heorku Usage
 
 [![Python Version][python-image]][python-url]

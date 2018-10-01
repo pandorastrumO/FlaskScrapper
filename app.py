@@ -88,12 +88,15 @@ def progress():
 
                 close(DRIVER)
 
+                # process dot
+                # \u002E
+
                 _jobs = mongoConnections.db.jobs
                 id_ = _jobs.insert({
                     "Post" : scrapping_link,
                     "Likers" : likers,
                     "Commenters" : commenters,
-                    "DateStamp" : str(get_curr_date_time())
+                    "DateStamp" : str(get_curr_date_time(_strft="%b/%d/%Y %H\u002E%M"))
                 })
                 # get the data again
                 _get_collections = _jobs.find_one({"_id": ObjectId(id_)})
@@ -147,43 +150,6 @@ def results(_jobs_id):
                            _post_link = _get_collections["Post"])
 
 
-    # get the data and pass to template
-
-@app.route('/addJob')
-def addJob():
-    _jobs_number = "Jobs1"
-    _id = 1
-    _postLink = "https://facebook.com"
-    _likers_name = ["James Mcglynn", "SH SU TA", "Saidul Islam"]
-    _likers_profile_link = ["https://www.facebook.com/james.mcglynn.69", "https://www.facebook.com/sstanni00", "https://www.facebook.com/profile.php?id=100004007562558"]
-    _likers_like = [["Bigs bee", "Lion", "Cat"], ["Azir", "Udyr", "Jax"], ["Ahri", "Nautilus", "Brand"]]
-    _commenters_name = ["Tanvir Ruhan", "Anis Sinha", "Mehedi Hossain"]
-    _commenters_profile_link = ["https://facebook.com/James", "https://facebook.com/sh_tanni", "https://facebook.com/saidul"]
-    _commenters_like = []
-
-    _collections = mongoConnections.db.main
-    _collections.insert_one({
-        "id": _id,
-        "dateStamp": datetime.datetime.utcnow(),
-        "postLink": f"{_postLink}",
-        "Likers":{
-            "Name": _likers_name,
-            "profileLink": _likers_profile_link,
-            "like": _likers_like
-        },
-        "Commenters": {
-            "Name":[],
-            "profileLink":[],
-            "like":[]
-        }
-    })
-    return 'Jobs added'
-
-
-# TODO: another result page for taking from database taking parameters
-
-
-
 def finished_scrape(null):
     """
     A callback that is fired after the scrape has completed.
@@ -195,21 +161,5 @@ def finished_scrape(null):
 
 if __name__ == '__main__':
     app.run()
-    # from sys import stdout
-    #
-    # from twisted.logger import globalLogBeginner, textFileLogObserver
-    # from twisted.web import server, wsgi
-    # from twisted.internet import endpoints, reactor
-    #
-    # # start the logger
-    # globalLogBeginner.beginLoggingTo([textFileLogObserver(stdout)])
-    #
-    # # start the WSGI server
-    # root_resource = wsgi.WSGIResource(reactor, reactor.getThreadPool(), app)
-    # factory = server.Site(root_resource)
-    # http_server = endpoints.TCP4ServerEndpoint(reactor, 9000)
-    # http_server.listen(factory)
-    #
-    # # start event loop
-    # reactor.run()
+
 

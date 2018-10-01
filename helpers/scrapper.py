@@ -48,7 +48,6 @@ def get_driver(_os, _browser):
         if _browser == "opera":
             return webdriver.Opera(executable_path="./Binary/windows/operadriver.exe")
 
-
 def close(_driver):
     """
     functions for closing the web driver
@@ -142,9 +141,42 @@ def get_likers(_driver):
         _likers_profile_list.append(full_profile_link)          # adding the URL to the list
 
         name = b.find("strong").text                            # finding the name
+        if "." in name:
+            name = name.replace(".", "")
+        print(name)
         _likers_name_list.append(name)                          # adding the name to the list
 
     return _likers_name_list, _likers_profile_list              # return the two list
+
+def get_commenters(_driver):
+    _commenters_name_list = []                  # the first list of names that will be returned
+    _commenters_profile_list = []               # the second list of profile links that will be returned
+
+    view_previous_button = get_view_previous_locator(_driver)
+
+    while view_previous_button != None:
+        view_previous_button.find_element_by_xpath("..").click()
+        time.sleep(1.0)
+        view_previous_button = get_view_previous_locator(_driver)
+
+    html_doc = _driver.page_source
+    soup3 = BeautifulSoup(html_doc, 'lxml')
+
+    all_blocks = soup3.findAll('div', {'class':'_2b05'})
+    print(all_blocks)
+    for blocks in all_blocks:
+        profile_link = blocks.find("a")['href']
+        # absolute link
+        absolute_profile_link = LOGIN_URL + profile_link
+        _commenters_profile_list.append(absolute_profile_link)
+
+        name = blocks.find("a").text
+        if "." in name:
+            name = name.replace(".", "")
+        print(name)
+        _commenters_name_list.append(name)
+
+    return _commenters_name_list, _commenters_profile_list
 
 def get_profile_like(_driver, _list, _url_list):
     """
@@ -207,40 +239,4 @@ def get_profile_like(_driver, _list, _url_list):
         print(_iterator)
     return _profile_likes                                           # return the dictionary
 
-
-
-# # get commenters
-def get_commenters(_driver):
-    _commenters_name_list = []                  # the first list of names that will be returned
-    _commenters_profile_list = []               # the second list of profile links that will be returned
-
-    view_previous_button = get_view_previous_locator(_driver)
-
-    while view_previous_button != None:
-        view_previous_button.find_element_by_xpath("..").click()
-        time.sleep(1.0)
-        view_previous_button = get_view_previous_locator(_driver)
-
-    html_doc = _driver.page_source
-    soup3 = BeautifulSoup(html_doc, 'lxml')
-
-    all_blocks = soup3.findAll('div', {'class':'_2b05'})
-    print(all_blocks)
-    for blocks in all_blocks:
-        profile_link = blocks.find("a")['href']
-        # absolute link
-        absolute_profile_link = LOGIN_URL + profile_link
-        _commenters_profile_list.append(absolute_profile_link)
-
-        name = blocks.find("a").text
-        _commenters_name_list.append(name)
-
-    return _commenters_name_list, _commenters_profile_list
-
-def tester():
-    DRIVER = webdriver.Chrome(executable_path="./Binary/chromedriver.exe")
-    username = "dreadlordn"
-    password = "11alphakappa8rndchaos6log04dreadlordnadimlast11sirius"
-    url = "https://www.facebook.com/groups/AsenBebshaKori/permalink/2117591501888502/"
-    login(DRIVER, username, password)
 
