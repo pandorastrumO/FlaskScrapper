@@ -19,6 +19,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
                     <h1>Results</h1>
                 </div>
+                <!-- Separator -->
                 <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <hr />
                 </div>
@@ -27,53 +28,111 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
-                    <h6>Post Link {{ _post_link }}</h6>
-                    <h6>Comments</h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Commenters</th>
-                                <th>Their Likings</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for key, val in _comments.items() %}
-                            <tr>
-                                <th scope="row">{{ loop.index }}</th>
-                                <td>{{ key }}</td>
-                                <td>{{ val }}</td>
-                            </tr>
+                    {% if _jobs %}
+                        <h6>Post Link {{ _jobs["Post"] }}</h6>
+                        <!-- Separator -->
+                        <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <hr />
+                        </div>
+                        <h6>Comments</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Commenters</th>
+                                    <th>Their Likings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key, val in _jobs["Commenters"].items() %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>{{ key }}</td>
+                                    <td>{{ val }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- Separator -->
+                        <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <hr />
+                        </div>
+                        <h6>Likes</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Likers</th>
+                                    <th>Their Likings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, val in _jobs["Likers"].items() %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>{{ key }}</td>
+                                    <td>{{ val }}</td>
+                                </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                    <h6>Likes</h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Likers</th>
-                                <th>Their Likings</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for key, val in _likes.items() %}
-                            <tr>
-                                <th scope="row">{{ loop.index }}</th>
-                                <td>{{ key }}</td>
-                                <td>{{ val }}</td>
-                            </tr>
+                            </tbody>
+                        </table>
+                    {% elif _list_of_jobs %}
+                        {% for _job in _list_of_jobs %}
+                            <h6>Post Link {{ _job["Post"] }}</h6>
+                            <!-- Separator -->
+                            <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <hr />
+                        </div>
+                            <h6>Comments</h6>
+                            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Commenters</th>
+                                    <th>Their Likings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key, val in _job["Commenters"].items() %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>{{ key }}</td>
+                                    <td>{{ val }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                            <!-- Separator -->
+                            <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <hr />
+                        </div>
+                            <h6>Likes</h6>
+                            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Likers</th>
+                                    <th>Their Likings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, val in _job["Likers"].items() %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>{{ key }}</td>
+                                    <td>{{ val }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                         {% endfor %}
-                        </tbody>
-                    </table>
+                    {% endif %}
                 </div>
                 <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <hr />
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
-                    <button type="button" class="btn btn-light">DownloadCSV</button>
+                    <button type="button" class="btn btn-light">Download CSV</button>
                 </div>
             </div>
         </div>

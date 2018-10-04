@@ -18,7 +18,7 @@ def readCSV(_filename, _columnName):
     :return: a list
     """
     _list = []
-    with open(_filename, 'rb') as csvFile:
+    with open(_filename, 'r') as csvFile:
         r = csv.DictReader(csvFile)
         for row in r:
             _list.append(row[_columnName])
