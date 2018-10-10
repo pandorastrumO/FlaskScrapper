@@ -16,9 +16,8 @@
         <!-- Bootstrap core JavaScript
     ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="../static/js/jquery.min.js"></script>
         <div class="container">
-            <form action="{{ url_for('progress') }}" method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{{ url_for('progress') }}" enctype="multipart/form-data">
             <div class="row" style="color: #ffffff; text-align: center; align-items: center; justify-content: center;">
                 <!-- header -->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -113,6 +112,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <hr />
                 </div>
+
                 <!-- Previous JOB Table -->
                 <div class="col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12" style="margin-top: 1%;
     margin-bottom: 1%;">
@@ -142,6 +142,7 @@
             </div>
             </form>
         </div>
+        <script src="../static/js/jquery.min.js"></script>
         <script src="../static/js/popper.js"></script>
         <script src="../static/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -189,13 +190,35 @@
                 });
             });
 
-            // file upload name changer
-            $('#inputGroupFile01').on('change',function(){
-                //get the file name
-                var fileName = $(this).val();
-                //replace the "Choose a file" label
-                $(this).next('.custom-file-label').html(fileName);
-            })
+
+
+        function update_progress(status_url, nanobar, status_div) {
+            // send GET request to status URL
+            $.getJSON(status_url, function(data) {
+                // update UI
+                percent = parseInt(data['current'] * 100 / data['total']);
+                nanobar.go(percent);
+                $(status_div.childNodes[1]).text(percent + '%');
+                $(status_div.childNodes[2]).text(data['status']);
+                if (data['state'] != 'PENDING' && data['state'] != 'PROGRESS') {
+                    if ('result' in data) {
+                        // show result
+                        $(status_div.childNodes[3]).text('Result: ' + data['result']);
+                    }
+                    else {
+                        // something unexpected happened
+                        $(status_div.childNodes[3]).text('Result: ' + data['state']);
+                    }
+                }
+                else {
+                    // rerun in 2 seconds
+                    setTimeout(function() {
+                        update_progress(status_url, nanobar, status_div);
+                    }, 1000);
+                }
+            });
+        }
+
         </script>
     </body>
 </html>

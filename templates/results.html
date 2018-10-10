@@ -28,61 +28,14 @@
                 </div>
 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
-                    {% if _jobs %}
-                        <h6>Post Link {{ _jobs["Post"] }}</h6>
-                        <!-- Separator -->
-                        <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <hr />
-                        </div>
-                        <h6>Comments</h6>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Commenters</th>
-                                    <th>Their Likings</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for key, val in _jobs["Commenters"].items() %}
-                                <tr>
-                                    <th scope="row">{{ loop.index }}</th>
-                                    <td>{{ key }}</td>
-                                    <td>{{ val }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <!-- Separator -->
-                        <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <hr />
-                        </div>
-                        <h6>Likes</h6>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Likers</th>
-                                    <th>Their Likings</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for key, val in _jobs["Likers"].items() %}
-                                <tr>
-                                    <th scope="row">{{ loop.index }}</th>
-                                    <td>{{ key }}</td>
-                                    <td>{{ val }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% elif _list_of_jobs %}
+                    {% if _list_of_jobs %}
                         {% for _job in _list_of_jobs %}
                             <h6>Post Link {{ _job["Post"] }}</h6>
+                            <h6>Post ID {{ _job["_id"] }}</h6>
                             <!-- Separator -->
                             <div class="w-100 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                            <hr />
-                        </div>
+                                <hr />
+                            </div>
                             <h6>Comments</h6>
                             <table class="table">
                             <thead>
@@ -90,6 +43,7 @@
                                     <th>#</th>
                                     <th>Commenters</th>
                                     <th>Their Likings</th>
+                                    <th> URL Links</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,7 +51,8 @@
                                 <tr>
                                     <th scope="row">{{ loop.index }}</th>
                                     <td>{{ key }}</td>
-                                    <td>{{ val }}</td>
+                                    <td>{{ val.keys() }}</td>
+                                    <td>{{ val.values() }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -113,6 +68,7 @@
                                     <th>#</th>
                                     <th>Likers</th>
                                     <th>Their Likings</th>
+                                    <th>URL Link</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,7 +76,8 @@
                                 <tr>
                                     <th scope="row">{{ loop.index }}</th>
                                     <td>{{ key }}</td>
-                                    <td>{{ val }}</td>
+                                    <td>{{ val.keys() }}</td>
+                                    <td>{{ val.values() }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -132,7 +89,7 @@
                     <hr />
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
-                    <button type="button" class="btn btn-light">Download CSV</button>
+                    <button type="button" class="btn btn-light" id="downloadcsv">Download CSV</button>
                 </div>
             </div>
         </div>
@@ -144,5 +101,20 @@
         <script src="../static/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+        <script type="text/javascript">
+            // download button called
+            // get ajax call to get data
+            $(document).ready(function(){
+
+                $("#downloadcsv").click(function(){
+                    $.ajax({
+                        type : 'POST',
+                        url : "{{url_for('downloadCSV')}}",
+                        contentType: 'application/json;charset=UTF-8',
+                        data : {'data':"csv data here"}
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

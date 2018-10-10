@@ -1,6 +1,6 @@
 import os
 from bson import ObjectId
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, Response, json
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
 from helpers.scrapper import login, get_driver, get_likers, get_profile_like, close, get_commenters
@@ -74,12 +74,20 @@ def index():
 
 @app.route('/userprofile', methods=['GET'])
 def userprofile():
+    """
+    User Profile Page for adding new or edit existing
+    :return:
+    """
     _users_collections = mongo.db.users
     _all_users_document = list(_users_collections.find())  # get all the documents from user collections
     return render_template('user.html', _user_data = _all_users_document)
 
 @app.route('/getuser', methods= ['GET'])
 def getuser():
+    """
+    Route to handle Ajax call from browser
+    :return:
+    """
     _users_collections = mongo.db.users  # get the users collections from mongo db
     _all_users_document = list(_users_collections.find())  # get all the documents from user collections
     return jsonify(JSONEncoder().encode(_all_users_document))
@@ -90,19 +98,19 @@ def progress():
     Progress page <all crawling mechanism starts here>
     :return:
     """
-    _jobs_collections = mongo.db.jobs              # get the jobs collections from mongo db
-    _users_collections = mongo.db.users            # get the users collections from mongo db
+    _jobs_collections = mongo.db.jobs                   # get the jobs collections from mongo db
+    _users_collections = mongo.db.users                 # get the users collections from mongo db
 
     _id_list = []
-    _selections = request.form.get("selections")  # get selection values from front end
+    _selections = request.form.get("selections")        # get selection values from front end
     _get_user = _users_collections.find_one({"user": _selections})  # find matching documents from mongo
-    _link_to_scrap = get_post()  # list of links to scrape
-    if _get_user != None:  # error checking when document not found
+    _link_to_scrap = get_post()                         # list of links to scrape
+    if _get_user != None:                               # error checking when document not found
         DRIVER = setup_drivers(_get_user["os"], _get_user["browser"])  # Setup the correct driver
         login(DRIVER, _get_user["user"], _get_user["pass"])  # try login to facebook
         if DRIVER.current_url == "https://m.facebook.com/login/save-device/?login_source=login#_=_":  # login success
             for i in _link_to_scrap:
-                DRIVER.get(i)  # get the scrapping page
+                DRIVER.get(i)                           # get the scrapping page
                 _commenters_name, _commenters_profile = get_commenters(DRIVER)  # get Commenters
                 _likers_name, _likers_profile = get_likers(DRIVER)  # get likers
                 likers = get_profile_like(DRIVER, _likers_name, _likers_profile)  # get likers like
@@ -114,8 +122,9 @@ def progress():
                     "DateStamp": str(get_curr_date_time(_strft="%b/%d/%Y %H\u002E%M"))
                 }
                 id_ = _jobs_collections.insert_one(_data)
-                _id_list.append(id_)
-            close(DRIVER) # close driver
+
+                _id_list.append(id_.inserted_id)
+            close(DRIVER)                               # close driver
 
             _job_list = []
             for j in _id_list:
@@ -134,7 +143,6 @@ def progress():
 
     # return render_template('progress.html', _progress = "Scrapping is in progress")
 
-
 @app.route('/error', methods=['GET'])
 def error():
     """
@@ -142,11 +150,6 @@ def error():
     :return:
     """
     return render_template('error.html')
-
-
-# @app.route('/results', methods=['GET'])
-# def results():
-#     pass
 
 @app.route('/results/<list:_jobs_id_list>', methods=['GET'])
 def results(_jobs_id_list):
@@ -169,7 +172,6 @@ def results(_jobs_id_list):
         # return json.dumps(quotes_list)
 
     return render_template('results.html', _list_of_jobs = _jobs_list)
-
 
 # custom methods ============================================================
 def finished_scrape(null):
@@ -223,6 +225,38 @@ def get_post():
                 _link.append(i.replace("www", "m"))
 
     return _link
+
+@app.route("/downloadCSV", methods=["POST"])
+def downloadCSV():
+    def flattenjson(b, delim):
+        val = {}
+        for i in b.keys():
+            if isinstance(b[i], dict):
+                get = flattenjson(b[i], delim)
+                for j in get.keys():
+                    val[i + delim + j] = get[j]
+            else:
+                val[i] = b[i]
+
+        return val
+
+
+    if request.method == "POST":
+        _data = request.json['data']
+        print(_data)
+        real_data = flattenjson(_data, "__")
+
+        f = csv.writer(open("test.csv", "wb+"))
+    # csv = f'No.,Likers,Their Likings,URL Links,Commenters,Thier Likings,URL Links\n'
+    # for i in _var:
+    #     csv = csv + i["Post"] + "\n"
+
+        outfile = str(get_curr_date_time()) + ".csv"
+        return Response(
+            _data,
+            mimetype="text/csv",
+            headers={"Content-disposition":
+                 f"attachment; filename={outfile}"})
 
 if __name__ == '__main__':
     app.run()
